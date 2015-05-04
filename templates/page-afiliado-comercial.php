@@ -1,6 +1,6 @@
 <?php
  /*
- * Template Name: Afiliado Profesional
+ * Template Name: Afiliado Comercio
  * @subpackage MedicSemka
  * @since 1.0
  */
@@ -33,15 +33,15 @@ EOT;
 
 get_header(); ?>
 
-	<div class="container afiliar profesional">
+	<div class="container afiliar comercio">
 		<!-- header -->
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="color-button head-title match1 color-bg">
 					<div class="heart-plus white"></div>
 					<div class="label">
-						<span>Afiliado</span>
-						<h1>Profesional</h1>
+						<span>Comercio</span>
+						<h1>Afiliado</h1>
 					</div>
 				</div>
 			</div>
@@ -55,9 +55,9 @@ get_header(); ?>
 		<!-- second row -->
 		<div class="row">
 			<div class="col-sm-12">
-				<figure class="full" style="background-image:url(<?php echo get_template_directory_uri() ?>/img/stock_doctor_smiling.jpg)">
-					<div class="image-overlay professional-overlay-1 magictime spaceInLeft">
-						<img src="<?php echo get_template_directory_uri() ?>/img/overlay_professional.png" alt="">
+				<figure class="full" style="background-image:url(<?php echo get_template_directory_uri() ?>/img/stock_gym.jpg)">
+					<div class="image-overlay comercial-overlay-1 magictime spaceInLeft">
+						<h1 class="orange">Afilia tu Negocio al MEJOR sistema preventivo de Salud.</h1>
 					</div>
 				</figure>
 			</div>
@@ -80,7 +80,7 @@ get_header(); ?>
 			</div>
 			<!-- img -->
 			<div class="col-sm-4">
-				<figure class="match2" style="background-image:url(<?php echo get_template_directory_uri() ?>/img/stock_doctor_patient_small.jpg)"></figure>
+				<figure class="match2" style="background-image:url(<?php echo get_template_directory_uri() ?>/img/stock_farmacist.jpg)"></figure>
 			</div>
 		</div>
 
@@ -121,7 +121,7 @@ get_header(); ?>
 			</div>
 		</div>
 		<div class="buttons">
-			<div class="match7 color-button purple-bg">
+			<div class="match7 color-button orange-bg">
 				<a class="btn-afiliate" href="#">
 					<div class="heart-plus white"></div>
 					<div class="label">
@@ -145,7 +145,7 @@ get_header(); ?>
 	<div class="overlay"></div>
 	<div class="popup-holder popup-afiliate">
 		<div class="content">
-			<h1 id="current_afiliate_title" class="purple">Profesional Afiliado</h1>
+			<h1 id="current_afiliate_title" class="orange">Afiliado Principal</h1>
 			<form id="frm_afiliates" class="form-horizontal">
 
 				<!-- afiliado principal -->
@@ -287,7 +287,7 @@ get_header(); ?>
 				</div>
 				
 				<div class="buttons">
-					<div id="btn_done" class="color-button static purple-bg disabled">
+					<div id="btn_done" class="color-button static orange-bg disabled">
 						<a href="#">
 							<div class="label">
 								<h1>Finalizar</h1>
@@ -311,7 +311,7 @@ get_header(); ?>
 			<?php echo $terms; ?>
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-8">
-					<div class="color-button static purple-bg">
+					<div class="color-button static orange-bg">
 						<a href="#" class="btn-close">
 							<div class="heart-plus white"></div>
 							<div class="label">
@@ -326,7 +326,7 @@ get_header(); ?>
 
 	<!-- payment -->
 	<div class="popup-holder popup-pay">
-		<div class="title purple-bg">
+		<div class="title orange-bg">
 			<h1>Registra tu Pago</h1>
 		</div>
 		<div class="content">
@@ -379,7 +379,7 @@ get_header(); ?>
 				</div>
 
 				<div class="buttons">
-					<div class="color-button static purple-bg">
+					<div class="color-button static orange-bg">
 						<a href="#" id="submit_payment">
 							<div class="label">
 								<h1>Confirmar</h1>

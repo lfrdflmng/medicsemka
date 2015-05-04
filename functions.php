@@ -331,6 +331,8 @@ require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/customizer.php';
 
 
+//CUSTOMIZATION
+
 //Replaces the default Wordpress Jquery version for a newer one from Google
 if (!is_admin()) add_action("wp_enqueue_scripts", "my_jquery_enqueue", 11);
 function my_jquery_enqueue() {
@@ -338,4 +340,42 @@ function my_jquery_enqueue() {
    wp_register_script('jquery', "http" . ($_SERVER['SERVER_PORT'] == 443 ? "s" : "") . 
         "://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js", false, null);
    wp_enqueue_script('jquery');
+}
+
+function clean_content($str) {
+	return trim(strip_tags(str_replace('<p>', '<br>', $str), '<br>'));
+}
+
+function print_title($item) {
+	echo ucfirst($item->post_title);
+}
+
+function print_link($item) {
+	echo $item->guid;
+}
+
+//Blog
+
+function get_blog_image($item, $size = null) {
+	//size: thumbnail, medium, large, full
+	if ($size == null) {
+		$img = wp_get_attachment_image_src(get_post_thumbnail_id($item->ID), 'large', false, '');
+	}
+	else {
+		$img = wp_get_attachment_image_src(get_post_thumbnail_id($item->ID), $size, false, '');
+	}
+	if (is_array($img)) $img = reset($img);
+	if (empty($img)) {
+		$img = esc_url( get_template_directory_uri() ) . '/img/img_placeholder.jpg';
+	}
+	return $img;
+}
+
+function print_blog_content($item, $full = true) {
+	if ($full) {
+		echo clean_content($item->post_content);
+	}
+	else {
+		echo substr(clean_content($item->post_content), 0, 100) . '...';
+	}
 }

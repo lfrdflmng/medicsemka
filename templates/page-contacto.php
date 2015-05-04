@@ -15,13 +15,13 @@ get_header(); ?>
 			<div class="col-sm-12">
 				<div class="title lightblue-bg">
 					<h1 class="magictime slideLeftRetourn">Contáctanos</h1>
-				</div>
-				<div class="lightblue-bg hidden-xs">
-					<ul class="social-icons text-right">
-						<li><a href="#" class="instagram"></a></li>
-						<li><a href="#" class="twitter"></a></li>
-						<li><a href="#" class="facebook"></a></li>
-					</ul>
+					<div class="hidden-xs pull-right">
+						<ul class="social-icons text-right">
+							<li><a href="#" class="instagram"></a></li>
+							<li><a href="#" class="twitter"></a></li>
+							<li><a href="#" class="facebook"></a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
