@@ -25,8 +25,10 @@ function showPopup(id) {
 	$popup.css('top', (height - Math.floor($popup.height() / 2)) + 'px');*/
 }
 
-function emphasizeField($field) {
-	$field = $field.closest('.form-group');
+function emphasizeField($field, group) {
+	if (typeof group == 'undefined' || group) {
+		$field = $field.closest('.form-group');
+	}
 	$field.addClass('animated shake');
 	setTimeout(function() {
 		$field.removeClass('animated shake');
@@ -49,6 +51,10 @@ function isDate(val) {
 
 function isMoneyAmount(val) {
 	return /^[\d.,]+$/.test( val );
+}
+
+function isCI(val) {
+	return /^[\d.VEJvej-]+$/.test( val );
 }
 
 

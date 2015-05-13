@@ -40,7 +40,7 @@ function removeAfiliate() {
 
 	page = holder.find('#afiliado_adicional_' + _c_afiliado);
 
-	if (page.find('input[name="nombres[]"]').val().length > 0) {
+	if (page.find('input[name="nombres_sub[]"]').val().length > 0) {
 		if (!confirm('¿Está seguro que quiere quitar este afiliado?')) {
 			return false;
 		}
@@ -82,19 +82,58 @@ function updateTitleCurrentAfiliate(dir) {
 	}, 1000);
 }
 
-function enableIfAccepted() {
-	var checked = $('#accept_conditions').is(':checked');
-	if (checked) {
+function doneButton(enabled) {
+	if (enabled) {
 		$('#btn_done').removeClass('disabled');
 	}
-	else{
+	else {
 		$('#btn_done').addClass('disabled');
 	}
+}
+
+function enableIfAccepted(skip_validation) {
+	var checked = true;
+	if (!(typeof skip_validation == 'boolean' && skip_validation)) {
+		var $frm = $('#afiliado_principal');
+		var $field;
+
+		$field = $frm.find('input[name=nombres]');
+		if ($field.val().length == 0) {
+			doneButton(false);
+			emphasizeField($field);
+			return false;
+		}
+
+		$field = $frm.find('input[name=apellidos]');
+		if ($field.val().length == 0) {
+			doneButton(false);
+			emphasizeField($field);
+			return false;
+		}
+
+		$field = $frm.find('input[name=ci]');
+		if ($field.val().length < 6 || $field.val().length > 9 || !isCI($field.val())) {
+			doneButton(false);
+			emphasizeField($field);
+			return false;
+		}
+
+		$field = $frm.find('input[name=correo]');
+		if ($field.val().length == 0) {
+			doneButton(false);
+			emphasizeField($field);
+			return false;
+		}
+	}
+
+	$field = $('#accept_conditions');
+	checked = $field.is(':checked');
+	doneButton(checked);
+	emphasizeField($field.parent(), false);
 	return checked;
 }
 
 function submitForm() {
-	console.log('you have submitted the form');
 	showPayment();
 }
 
@@ -162,8 +201,8 @@ function checkPaymentData() {
 		return false;
 	}
 
-	$field = $frm.find('input[name=num_cuenta]');
-	if ($field.val().length < 5 || !isAccountNumber($field.val())) {
+	$field = $frm.find('select[name=num_cuenta]');//$frm.find('input[name=num_cuenta]');
+	if ($field.val().length == 0) { //if ($field.val().length < 5 || !isAccountNumber($field.val())) {//if ($field.val().length < 5 || !isAccountNumber($field.val())) {
 		emphasizeField($field);
 		return false;
 	}
@@ -194,10 +233,103 @@ function submitAfiliate() {
 	var $frm_afiliates = $('#frm_afiliates');
 
 	if (checkPaymentData()) {
-		console.log('form submition takes place here');
+		sendFormsData();
 		return true;
 	}
 	return false;
+}
+
+function commitVals($frm, type) {
+	if (typeof type == 'undefined') {
+		commitVals($frm, 'input');
+		commitVals($frm, 'select');
+		commitVals($frm, 'file');
+		//TODO: add support for textareas and radio buttons
+		return;
+	}
+	var inputs = $frm.find(type);
+	$.each(inputs, function(i,o) {
+		var $o = $(o);
+		if (type == 'select') {
+			$o.find('option[value="' + $o.val() + '"]').eq(0).attr('selected', 'selected');
+		}
+		else if (type == 'file') {
+			//
+		}
+		else {
+			$o.attr('value', $o.val());
+		}
+	});
+}
+
+function moveFormTo($frm_from, $frm_to) {
+	$('<div id="tmp_values" style="display:none">' + $frm_from.html() + '</div>').appendTo($frm_to);
+	var $tmp = $('#tmp_values');
+	$tmp.find('input[type=file]').remove();
+	var file_inputs = $frm_from.find('input[type=file]');
+	$.each(file_inputs, function(i,o) {
+		$(o).clone().appendTo( $tmp );
+	});
+}
+
+function blockSendButton() {
+	var $btn = $('#frm_payment').find('#submit_payment');
+	$btn.parent().addClass('disabled');
+	var $label = $btn.find('h1');
+	$label.attr('data-ori', $label.html());
+	$label.html( $label.attr('data-alt') );
+}
+function unblockSendButton() {
+	var $btn = $('#frm_payment').find('#submit_payment');
+	$btn.parent().removeClass('disabled');
+	var $label = $btn.find('h1');
+	$label.html( $label.attr('data-ori') );
+}
+
+function redirectToThankYouPage() {
+	if (typeof thank_you_page == 'undefined') {
+		alert('Gracias');
+		location.reload();
+	}
+	else {
+		window.location = thank_you_page;
+	}
+}
+
+function sendFormsData() {
+	blockSendButton();
+	var $frm_afiliates = $('#frm_afiliates');
+	var $frm_payment = $('#frm_payment');
+	//moving payment form fields to other form to be sent
+	commitVals($frm_payment);
+	moveFormTo($frm_payment, $frm_afiliates);
+
+	var data = new FormData($frm_afiliates[0]);
+
+	$.ajax({
+        url: $frm_payment.attr('action'),
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false
+    }).done(function(data) {
+    	console.log(data);
+	    if (data['ok'] == 1) {
+        	redirectToThankYouPage();
+        }
+        else {
+        	if (typeof data['msg'] == 'string') {
+        		alert(data['msg']);
+        	}
+        }
+	}).fail(function() {
+		alert('Ha ocurrido un error con la conexión.');
+	}).always(function() {
+		$('#tmp_values').remove();
+		unblockSendButton();
+	});
 }
 
 jQuery(document).ready(function($) {
@@ -250,13 +382,6 @@ jQuery(document).ready(function($) {
 		if (enableIfAccepted()) {
 			submitForm();
 		}
-		else {
-			var accepted = $('#accept_conditions').parent();
-			accepted.addClass('animated shake');
-			setTimeout(function() {
-				accepted.removeClass('animated shake');
-			}, 3000);
-		}
 		e.preventDefault();
 		return false;
 	});
@@ -296,5 +421,23 @@ jQuery(document).ready(function($) {
 		enableIfAccepted();
 		e.preventDefault();
 		return false;
+	});
+
+	$('#banco_select').change(function() {
+		var option = $(this).find('option[value=' + $(this).val() + ']');
+		var numbers = option.attr('data-list');
+		var num_select = $('#num_cuenta_select');
+		num_select.find('option').remove();
+		
+		if (typeof numbers != 'undefined') {
+			options = '';
+			numbers = numbers.split(',');
+			$.each(numbers, function(i,v) {
+				if (v.length) {
+					options += '<option value="' + v + '">' + v + '</option>';
+				}
+			});
+			num_select.html( options );
+		}
 	});
 });

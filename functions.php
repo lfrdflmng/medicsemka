@@ -342,8 +342,107 @@ function my_jquery_enqueue() {
    wp_enqueue_script('jquery');
 }
 
+//Makes font larger for the Message field of the Custom Fields plugin
+add_action('admin_head', 'custom_admin_style');
+function custom_admin_style() {
+  echo '
+  <style>
+    .field_type-message p {
+    	font-size: 25px;
+    }
+  </style>';
+}
+
+
+function upload_user_files($files, &$paths) {
+	$paths = array();
+	if ( ! function_exists( 'wp_handle_upload' ) ) {
+	    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	}
+
+	$upload_overrides = array( 'test_form' => false );
+
+	foreach ($files as $file) {
+		$file = wp_handle_upload( $file, $upload_overrides );
+		$file_moved = $file && !isset($file['error']);
+		if (!$file_moved) break;
+		$paths[] = $file['url'];
+	}
+
+	return $file_moved;
+}
+
+
+/**
+ * Class for adding a new field to the options-general.php page
+ */
+class Add_Settings_Field {
+
+	/**
+	 * Class constructor
+	 */
+	public function __construct() {
+		add_filter( 'admin_init' , array( &$this , 'register_fields' ) );
+	}
+
+	/**
+	 * Add new fields to wp-admin/options-general.php page
+	 */
+	public function register_fields() {
+		register_setting( 'general', 'facebook1', 'esc_attr' );
+		register_setting( 'general', 'twitter1', 'esc_attr' );
+		register_setting( 'general', 'instagram1', 'esc_attr' );
+		
+		add_settings_field(
+			'facebook1',
+			'<label for="facebook1">Facebook</label>',
+			array( &$this, 'facebook1_html' ),
+			'general'
+		);
+		
+		add_settings_field(
+			'twitter1',
+			'<label for="twitter1">Twitter</label>',
+			array( &$this, 'twitter1_html' ),
+			'general'
+		);
+		
+		add_settings_field(
+			'instagram1',
+			'<label for="instagram1">Instagram</label>',
+			array( &$this, 'instagram1_html' ),
+			'general'
+		);
+	}
+
+	/**
+	 * HTML for extra settings
+	 */
+	public function facebook1_html() {
+		$value = get_option( 'facebook1', '' );
+		echo '<input type="text" id="facebook1" name="facebook1" value="' . esc_attr( $value ) . '" style="width:400px" />';
+	}
+	
+	public function twitter1_html() {
+		$value = get_option( 'twitter1', '' );
+		echo '<input type="text" id="twitter1" name="twitter1" value="' . esc_attr( $value ) . '" style="width:400px" />';
+	}
+	
+	public function instagram1_html() {
+		$value = get_option( 'instagram1', '' );
+		echo '<input type="text" id="instagram1" name="instagram1" value="' . esc_attr( $value ) . '" style="width:400px" />';
+	}
+
+}
+new Add_Settings_Field();
+
+
 function clean_content($str) {
 	return trim(strip_tags(str_replace('<p>', '<br>', $str), '<br>'));
+}
+
+function print_var($name, $var) {
+	echo $var[$name][0];
 }
 
 function print_title($item) {
@@ -352,6 +451,71 @@ function print_title($item) {
 
 function print_link($item) {
 	echo $item->guid;
+}
+
+function nl3br($str) {
+	return str_replace(array("\r\n", "\r", "\n", "\n\r"), '<br />', $str);
+}
+
+function json_resp($ok = 1, $vals = array()) {
+	if (!is_array($vals)) {
+		$vals = array('msg' => $vals);
+	}
+	echo json_encode(
+		array_merge(
+			array('ok' => $ok),
+			$vals
+		)
+	);
+	die();
+}
+
+function html_row_cell($field, $val) {
+	return <<<EOT
+	<tr>
+		<th style="text-align:right">{$field}: </th>
+		<td>{$val}</td>
+	</tr>
+EOT;
+}
+
+function append_var_to_url($url, $var, $val) {
+	if (strpos($url, '?') !== false) {
+		$url .= '&';
+	}
+	else {
+		if (substr($url, -1) != '/') {
+			$url .= '/?';
+		}
+		else {
+			$url .= '?';
+		}
+	}
+	return $url . ($var . '=' . $val);
+}
+
+function send_email($subject, $html) {
+	$to = get_option('admin_email', 'programacion@plusdigital.com.ve');
+	//$subject = 'Datos de Afiliación';
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	return wp_mail( $to, $subject, $html, $headers );
+}
+
+function html_image($path) {
+	if (in_array(strtolower(substr($path, -4)), array('.jpg', '.png', '.gif')) || (strtolower(substr($path, -5)) == '.jpeg')) {
+		return <<<EOT
+		<a href="{$path}" target="_blank">
+			<img src="{$path}" style="max-height:300px;margin:10px">
+		</a>
+EOT;
+	}
+	//not a recognized image, treat as file
+	$icon = get_template_directory_uri() . '/img/icon_file.png';
+	return <<<EOT
+		<a href="{$path}">
+			<img src="{$icon}" alt="Ver archivo">
+		</a>
+EOT;
 }
 
 //Blog
@@ -379,3 +543,20 @@ function print_blog_content($item, $full = true) {
 		echo substr(clean_content($item->post_content), 0, 100) . '...';
 	}
 }
+
+
+// CUSTOM POST "Bancos"
+function posts_bancos() {
+    register_post_type( 'bancos', array(
+        'labels' => array(
+            'name' => 'Bancos',
+            'singular_name' => 'Banco',
+        ),
+        'menu_icon' => 'dashicons-money', //<-- https://developer.wordpress.org/resource/dashicons/
+        'description' => 'Cuentas Bancarias',
+        'public' => true,
+        'menu_position' => 20,
+        'supports' => array( 'title'/*, 'editor', 'thumbnail', 'categories'*/ )
+    ));
+}
+add_action( 'init', 'posts_bancos' );

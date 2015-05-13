@@ -63,7 +63,7 @@ get_header(); ?>
 			<!-- Contacta a un asesor -->
 			<div class="col-lg-3 col-sm-6 col-xs-12">
 				<div class="color-button brown-bg">
-					<a href="#">
+					<a href="<?php echo get_page_by_path('contacto')->guid; ?>">
 						<div class="heart-plus white"></div>
 						<div class="label">
 							<span>Contacta a un</span>

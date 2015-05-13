@@ -301,7 +301,7 @@ ul.menu li {
 ul.menu li a {
 	color: #fff;
 	display: inline-block;
-	padding: 8px 20px 8px 16px;
+	padding: 10px 20px 10px 16px;
 	height: 100%;
 	width: 100%;
 	text-decoration: none;
@@ -425,7 +425,7 @@ ul.menu li a:hover {
 	transition: margin .4s;
 }
 
-.color-button h1 {
+.color-button .label h1 {
 	font-weight: 700;
 	font-style: italic;
 	font-size: 25px;
@@ -454,6 +454,10 @@ ul.menu li a:hover {
 	padding-left: 10px;
 }
 
+
+.page-content {
+	min-height: 200px;
+}
 
 .blank-col {
 	/*background-color: #cecece;*/
@@ -770,6 +774,7 @@ footer .container {
 
 footer h2 {
 	text-align: left;
+	margin-top: 10px;
 }
 
 footer h2 a {
@@ -782,6 +787,10 @@ footer h2 a {
 
 footer ul li a {
 	color: #6d6e70;
+}
+
+footer h2, footer ul, footer p {
+	padding: 10px;
 }
 
 footer .copyrights p {
@@ -1149,7 +1158,7 @@ figure.full .image-overlay h1 {
 	padding: 20px;
 }
 
-.popup-terms-conditions p, .popup-terms-conditions ol {
+.popup-terms-conditions .content .user-content, .popup-terms-conditions p, .popup-terms-conditions ol {
 	font-size: 17px;
 	font-style: italic;
 	line-height: 1.8;
@@ -1189,12 +1198,12 @@ figure.full .image-overlay h1 {
 	margin-left: -14px;
 }
 
-.noticias .title {
+.noticias .title, .default .title {
 	margin-right: -14px;
 	min-height: 70px;
 }
 
-.noticias .title h1 {
+.noticias .title h1, .default .title h1 {
 	font-size: 40px;
 	font-weight: 700;
 	font-style: italic;
@@ -1202,6 +1211,14 @@ figure.full .image-overlay h1 {
 	text-transform: uppercase;
 	color: #fff;
 	padding: 12px 20px;
+}
+
+.default h1 {
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-weight: 700;
+	font-style: italic;
 }
 
 .noticias .news-preview {
@@ -1503,6 +1520,10 @@ ul.social-icons li {
 	background-color: #e27d1f;
 }
 
+.color-box.light {
+	background-color: #cbcbcb;
+}
+
 .color-box h1 {
 	text-align: center;
 	font-size: 30px;
@@ -1520,6 +1541,15 @@ ul.social-icons li {
 	font-style: italic;
 	color: #fff;
 }
+.color-box.light p {
+	text-align: justify;
+	color: #5d5d5d;
+	padding: 15px 30px;
+	line-height: 1.5;
+}
+.color-box.light p b {
+	font-weight: 700;
+}
 
 .post-afiliar.natural .large-button {
 	background-color: #00a079;
@@ -1535,7 +1565,12 @@ ul.social-icons li {
 	from { opacity: 0; }
 	to { opacity: 1; }
 }
+@-webkit-keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
 
 .fadeIn {
+	-webkit-animation: fadeIn 2s;
 	animation: fadeIn 2s;
 }

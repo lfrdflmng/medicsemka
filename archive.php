@@ -1,64 +1,90 @@
 <?php
-/**
- * The template for displaying archive pages
- *
- * Used to display archive-type pages if nothing more specific matches a query.
- * For example, puts together date-based pages if no date.php file exists.
- *
- * If you'd like to further customize these archive views, you may create a
- * new template file for each one. For example, tag.php (Tag archives),
- * category.php (Category archives), author.php (Author archives), etc.
- *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
+ /*
  * @package WordPress
- * @subpackage Twenty_Fifteen
- * @since Twenty Fifteen 1.0
+ * @subpackage MedicSemka
+ * @since 1.0
  */
+
+$feat_image = wp_get_attachment_url( get_post_thumbnail_id($post->ID) );
 
 get_header(); ?>
 
-	<section id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
+	<div class="container noticias">
+		<!-- header -->
+		<div class="row">
+			<div class="col-sm-9">
+				<div class="title match1 lightblue-bg">
+					<h1 class="magictime slideLeftRetourn">Noticias</h1>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="match1 blank-space hidden-xs"></div>
+			</div>
+		</div>
 
-		<?php if ( have_posts() ) : ?>
+		<div class="separator"></div>
 
-			<header class="page-header">
-				<?php
-					the_archive_title( '<h1 class="page-title">', '</h1>' );
-					the_archive_description( '<div class="taxonomy-description">', '</div>' );
-				?>
-			</header><!-- .page-header -->
+		<div class="row">
+			<!-- noticias -->
+			<div class="col-sm-8">
+				<div class="news-preview">
+					<?php
+						/*$args = array(
+							'posts_per_page' => 10,
+							'post_type' => 'post'
+						);
 
-			<?php
-			// Start the Loop.
-			while ( have_posts() ) : the_post();
+						$items = get_posts( $args );*/
 
-				/*
-				 * Include the Post-Format-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-				 */
-				get_template_part( 'content', get_post_format() );
+						foreach ($posts as $item) :
+							$img = get_blog_image($item, 'medium');
+					?>
+					<article class="fadeIn">
+						<a href="<?php print_link($item); ?>">
+							<div class="row">
+								<!-- image -->
+								<div class="col-sm-6">
+									<figure style="background-image:url(<?php echo $img; ?>)"></figure>
+								</div>
+								<!-- content -->
+								<div class="col-sm-6">
+									<h1><?php print_title($item); ?></h1>
+									<p><?php print_blog_content($item, false); ?></p>
+								</div>
+							</div>
+						</a>
+					</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
 
-			// End the loop.
-			endwhile;
+			<!-- sidebar -->
+			<div class="col-sm-4">
+				<!-- subscribe box -->
+				<?php include('templates/subscribe-box.php'); ?>
 
-			// Previous/next page navigation.
-			the_posts_pagination( array(
-				'prev_text'          => __( 'Previous page', 'twentyfifteen' ),
-				'next_text'          => __( 'Next page', 'twentyfifteen' ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>',
-			) );
+				<div class="separator"></div>
 
-		// If no content, include the "No posts found" template.
-		else :
-			get_template_part( 'content', 'none' );
+				<!-- categories -->
+				<?php include('templates/blog-categories.php'); ?>
 
-		endif;
-		?>
+				<div class="separator"></div>
 
-		</main><!-- .site-main -->
-	</section><!-- .content-area -->
+				<!-- social icons -->
+				<div class="social-box">
+					<ul class="social-icons">
+						<?php include('templates/social-icons.php'); ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
+<?php
+	$url = get_template_directory_uri();
+	$GLOBALS['script'] = <<<EOT
+<script type="text/javascript" src="{$url}/js/jquery.matchheight.min.js"></script>
+<script type="text/javascript" src="{$url}/js/functions_news.js"></script>
+EOT;
+?>
 <?php get_footer(); ?>

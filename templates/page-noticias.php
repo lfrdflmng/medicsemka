@@ -28,93 +28,52 @@ get_header(); ?>
 			<!-- noticias -->
 			<div class="col-sm-8">
 				<div class="news-preview">
-					<!-- to be looped -->
+					<?php
+						$args = array(
+							'posts_per_page' => 10,
+							'post_type' => 'post'
+						);
+
+						$items = get_posts( $args );
+
+						foreach ($items as $item) :
+							$img = get_blog_image($item, 'medium');
+					?>
 					<article class="fadeIn">
-						<a href="#">
+						<a href="<?php print_link($item); ?>">
 							<div class="row">
 								<!-- image -->
 								<div class="col-sm-6">
-									<figure style="background-image:url(<?php echo get_template_directory_uri() ?>/img/img_placeholder.jpg)"></figure>
+									<figure style="background-image:url(<?php echo $img; ?>)"></figure>
 								</div>
 								<!-- content -->
 								<div class="col-sm-6">
-									<h1>Lorem Ipsum</h1>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+									<h1><?php print_title($item); ?></h1>
+									<p><?php print_blog_content($item, false); ?></p>
 								</div>
 							</div>
 						</a>
 					</article>
-					<article class="fadeIn">
-						<a href="#">
-							<div class="row">
-								<!-- image -->
-								<div class="col-sm-6">
-									<figure style="background-image:url(<?php echo get_template_directory_uri() ?>/img/img_placeholder.jpg)"></figure>
-								</div>
-								<!-- content -->
-								<div class="col-sm-6">
-									<h1>Lorem Ipsum</h1>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
-								</div>
-							</div>
-						</a>
-					</article>
-					<article class="fadeIn">
-						<a href="#">
-							<div class="row">
-								<!-- image -->
-								<div class="col-sm-6">
-									<figure style="background-image:url(<?php echo get_template_directory_uri() ?>/img/img_placeholder.jpg)"></figure>
-								</div>
-								<!-- content -->
-								<div class="col-sm-6">
-									<h1>Lorem Ipsum</h1>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
-								</div>
-							</div>
-						</a>
-					</article>
+					<?php endforeach; ?>
 				</div>
 			</div>
 
 			<!-- sidebar -->
 			<div class="col-sm-4">
 				<!-- subscribe box -->
-				<div class="subscribe-box">
-					<h1>Recibe Nuestras Noticias en tu Email</h1>
-					<form>
-						<div class="input">
-							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-							<input type="email" name="subscribe_email" required>
-						</div>
-						<div class="buttons">
-							<button type="submit">Enviar</button>
-						</div>
-					</form>
-				</div>
+				<?php include('subscribe-box.php'); ?>
 
 				<div class="separator"></div>
 
 				<!-- categories -->
-				<div class="category-box">
-					<h1>Categorías</h1>
-					<ul>
-						<li><a href="#">Lorem</a></li>
-						<li><a href="#">Ipsum</a></li>
-						<li><a href="#">Dolor</a></li>
-						<li><a href="#">Sit amet</a></li>
-						<li><a href="#">Consectetuer</a></li>
-					</ul>
-				</div>
+				<?php include('blog-categories.php'); ?>
 
 				<div class="separator"></div>
 
 				<!-- social icons -->
 				<div class="social-box">
 					<ul class="social-icons">
-						<li><a href="#" class="instagram"></a></li>
-						<li><a href="#" class="twitter"></a></li>
-						<li><a href="#" class="facebook"></a></li>
+						<?php include('social-icons.php'); ?>
 					</ul>
 				</div>
 			</div>

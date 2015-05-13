@@ -5,9 +5,11 @@
  * @since 1.0
  */
 
+$page_vars = get_post_custom( get_page_by_path('afiliado-natural')->ID );
+
 $feat_image = wp_get_attachment_url( get_post_thumbnail_id($post->ID) );
 
-$terms = <<<EOT
+/*$terms = <<<EOT
 <p>LA EMPRESA MEDIC SEMKA C.A, domiciliada en Ciudad Bolívar, Municipio Autonomo HERES del Estado Bolívar, inscrita en el Registro de la Circunscripción Judicial del Estado Bolívar bajo el número 46, tomo 6-A, de fecha 2 de Febrero del año 2015, quien en lo sucesivo y a los efectos de este contrato se denomina servicios médicos, declara que ha resuelto hacer oferta pública del presente contrato para el uso de los servicios médicos que ofrece, quedando expresamente entendido que todo usuario de los servicios médicos de MEDIC SEMKA C.A, se adhiere a las clausulas, términos y modalidades QUE A CONTINUACIÓN SE ESTABLECEN:</p>
 <ol>
 <li>El contrato y sus beneficios solo serán para el afiliado, no puede utilizarlo una segunda persona.</li>
@@ -27,7 +29,8 @@ $terms = <<<EOT
 </ol>
 <p>CONTRATO N° 00001<br>
 <p>El presente contrato de afiliación, tiene validez por 12 meses a partir de la fecha de inicio de contrato y culmina 12 meses posteriores a la misma.</p>
-EOT;
+EOT;*/
+$terms = $page_vars['terminos_condiciones'][0];
 
 get_header(); ?>
 
@@ -55,21 +58,34 @@ get_header(); ?>
 			<!-- beneficios -->
 			<div class="col-sm-4">
 				<div class="box match2 color-bg">
-					<h1>BENEFICIOS</h1>
+					<h1><?php print_var('beneficios_titulo', $page_vars); ?></h1>
 					<ul>
-						<li><span class="lbl">Atención Inmediata</span><span class="circle-icon icon-medical"></span></li>
+						<?php
+							$icons_array = array('medical', 'piggy', 'handplus', 'tooth', 'bs');
+							$max = count($icons_array);
+							$text_array = explode('<br />', nl3br($page_vars['beneficios_contenido'][0]));
+							$i = 0;
+							foreach ($text_array as $text) :
+						?>
+						<li><span class="lbl"><?php echo $text; ?></span><span class="circle-icon icon-<?php echo $icons_array[$i]; ?>"></span></li>
+						<?php
+								$i++;
+								if ($i >= $max) break;
+							endforeach;
+						?>
+						<!--li><span class="lbl">Atención Inmediata</span><span class="circle-icon icon-medical"></span></li>
 						<li><span class="lbl">Economía</span><span class="circle-icon icon-piggy"></span></li>
 						<li><span class="lbl">Cobertura amplia</span><span class="circle-icon icon-handplus"></span></li>
 						<li><span class="lbl">Odontología y Ortodoncia</span><span class="circle-icon icon-tooth"></span></li>
-						<li><span class="lbl">Precios Increibles</span><span class="circle-icon icon-bs"></span></li>
+						<li><span class="lbl">Precios Increibles</span><span class="circle-icon icon-bs"></span></li-->
 					</ul>
 				</div>
 			</div>
 			<!-- sisa familiar -->
 			<div class="col-sm-5">
 				<div class="box match2 color-bg right-arrow">
-					<h1>¿Qué es una SISA FAMILIAR?</h1>
-					<p>Ofrece los mejores planes de salud a nuestros Afiliados a través de atención preventiva. Garantiza a los usuarios economía y rápida atención ya que contamos con expertos de la salud con el más alto nivel profesional.</p>
+					<h1><?php print_var('sisa_familiar_titulo', $page_vars); ?></h1>
+					<p><?php print_var('sisa_familiar_contenido', $page_vars); ?></p>
 				</div>
 			</div>
 			<!-- img -->
@@ -102,10 +118,15 @@ get_header(); ?>
 			<!-- servicios especializados ofertados -->
 			<div class="col-sm-8">
 				<div class="box match4 color-bg right-arrow">
-					<h1>SERVICIOS ESPECIALIZADOS OFERTADOS</h1>
-					<p>Consulta Médica Especializada:</p>
+					<h1><?php print_var('servicios_especializados_ofertados_titulo', $page_vars); ?></h1>
+					<p><?php print_var('servicios_especializados_ofertados_subtitulo', $page_vars); ?></p>
 					<ol>
-						<li>Medicina Interna</li>
+						<?php
+							$items = explode('<br />', nl3br($page_vars['servicios_especializados_ofertados_contenido'][0]));
+							foreach ($items as $item) :
+						?>
+						<li><?php echo $item; ?></li>
+						<!--li>Medicina Interna</li>
 						<li>Cirugía</li>
 						<li>Ginecología</li>
 						<li>Pediatría</li>
@@ -119,7 +140,10 @@ get_header(); ?>
 						<li>Cirugía Pediátrica</li>
 						<li>Traumatología Pediátrica</li>
 						<li>Endocrinología Pediátrica</li>
-						<li>Otros</li>
+						<li>Otros</li-->
+						<?php
+							endforeach;
+						?>
 					</ol>
 				</div>
 			</div>
@@ -142,24 +166,40 @@ get_header(); ?>
 		<div class="row">
 			<div class="col-sm-7">
 				<div class="box match6 color-bg">
-					<h1>SERVICIOS ADICIONALES</h1>
+					<h1><?php print_var('servicios_adicionales_titulo', $page_vars); ?></h1>
 					<ul>
-						<li>Servicios de laboratorio a precios especiales.</li>
-						<li>Servicio de ambulancia para apoyo interurbano desde su casa o donde se presente la emergencia hasta cualquier centro de salud previamente establecido.</li>
+						<?php
+							$items = explode('<br />', nl3br($page_vars['servicios_adicionales_contenido'][0]));
+							foreach ($items as $item) :
+						?>
+						<li><?php echo $item; ?></li>
+						<?php
+							endforeach;
+						?>
+						<!--li>Servicios de laboratorio a precios especiales.</li>
+						<li>Servicio de ambulancia para apoyo interurbano desde su casa o donde se presente la emergencia hasta cualquier centro de salud previamente establecido.</li-->
 					</ul>
 				</div>
 			</div>
 			<!-- otros servicios de salud -->
 			<div class="col-sm-5">
 				<div class="box match6 color-bg">
-					<h1>OTROS SERVICIOS DE SALUD</h1>
+					<h1><?php print_var('otros_servicios_salud_titulo', $page_vars); ?></h1>
 					<ul class="columnized">
-						<li>Nutricionista</li>
+						<?php
+							$items = explode('<br />', nl3br($page_vars['otros_servicios_salud_contenido'][0]));
+							foreach ($items as $item) :
+						?>
+						<li><?php echo $item; ?></li>
+						<?php
+							endforeach;
+						?>
+						<!--li>Nutricionista</li>
 						<li>Psiquiatría</li>
 						<li>Gimnasio</li>
 						<li>Spa</li>
 						<li>Odontología</li>
-						<li>Psicología</li>
+						<li>Psicología</li-->
 					</ul>
 				</div>
 			</div>
@@ -184,7 +224,7 @@ get_header(); ?>
 				</a>
 			</div>
 			<div class="match7 color-button brown-bg">
-				<a href="#">
+				<a href="<?php echo get_page_by_path('contacto')->guid; ?>">
 					<div class="heart-plus white"></div>
 					<div class="label">
 						<span>Contacta a un</span>
@@ -200,6 +240,7 @@ get_header(); ?>
 		<div class="content">
 			<h1 id="current_afiliate_title">Afiliado Principal</h1>
 			<form id="frm_afiliates" class="form-horizontal">
+				<input type="hidden" name="medicsemka_type" value="natural">
 
 				<!-- afiliado principal -->
 				<div id="afiliado_principal">
@@ -220,11 +261,11 @@ get_header(); ?>
 						</div>
 
 						<div class="radio radio-primary radio-inline">
-		                    <input type="radio" id="genero_female" name="genero" value="0">
+		                    <input type="radio" id="genero_female" name="genero" value="Femenino">
 		                    <label for="genero_female"> Femenino </label>
 		                </div>
 		                <div class="radio radio-primary radio-inline">
-		                    <input type="radio" id="genero_male" name="genero" value="1">
+		                    <input type="radio" id="genero_male" name="genero" value="Masculino">
 		                    <label for="genero_male"> Masculino </label>
 		                </div>
 					</div>
@@ -327,25 +368,25 @@ get_header(); ?>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Nombre</label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="nombres[]" placeholder="Nombres">
+							<input type="text" class="form-control" name="nombres_sub[]" placeholder="Nombres">
 						</div>
 						<!--label class="col-sm-2 control-label">Apellidos</label-->
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="apellidos[]" placeholder="Apellidos">
+							<input type="text" class="form-control" name="apellidos_sub[]" placeholder="Apellidos">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">C.I.</label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="ci[]" placeholder="C.I.">
+							<input type="text" class="form-control" name="ci_sub[]" placeholder="C.I.">
 						</div>
 
 						<div class="radio radio-primary radio-inline">
-		                    <input type="radio" id="genero_female_0" name="genero[]" value="0">
+		                    <input type="radio" id="genero_female_0" name="genero_sub[]" value="Femenino">
 		                    <label for="genero_female_0"> Femenino </label>
 		                </div>
 		                <div class="radio radio-primary radio-inline">
-		                    <input type="radio" id="genero_male_0" name="genero[]" value="1">
+		                    <input type="radio" id="genero_male_0" name="genero_sub[]" value="Masculino">
 		                    <label for="genero_male_0"> Masculino </label>
 		                </div>
 					</div>
@@ -353,71 +394,71 @@ get_header(); ?>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Fecha de Nacimiento</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control date-input" name="fecha_nacimiento[]">
+							<input type="text" class="form-control date-input" name="fecha_nacimiento_sub[]">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Dirección de Habitación</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="direccion_hab[]" placeholder="Dirección de Habitación">
+							<input type="text" class="form-control" name="direccion_hab_sub[]" placeholder="Dirección de Habitación">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Telf. celular</label>
 						<div class="col-sm-4">
-							<input type="tel" class="form-control" name="tlf_cel[]" placeholder="Telf. celular">
+							<input type="tel" class="form-control" name="tlf_cel_sub[]" placeholder="Telf. celular">
 						</div>
 
 						<label class="col-sm-2 control-label">Telf. local</label>
 						<div class="col-sm-4">
-							<input type="tel" class="form-control" name="tlf_local[]" placeholder="Telf. local">
+							<input type="tel" class="form-control" name="tlf_local_sub[]" placeholder="Telf. local">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="correo" class="col-sm-2 control-label">Correo</label>
 						<div class="col-sm-10">
-							<input type="email" class="form-control" name="correo[]" placeholder="Correo">
+							<input type="email" class="form-control" name="correo_sub[]" placeholder="Correo">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Facebook</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="facebook[]" placeholder="Facebook">
+							<input type="text" class="form-control" name="facebook_sub[]" placeholder="Facebook">
 						</div>
 
 						<label class="col-sm-2 control-label">Twitter</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="twitter[]" placeholder="Twitter">
+							<input type="text" class="form-control" name="twitter_sub[]" placeholder="Twitter">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Instagram</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="instagram[]" placeholder="Instagram">
+							<input type="text" class="form-control" name="instagram_sub[]" placeholder="Instagram">
 						</div>
 
 						<label class="col-sm-2 control-label">Pin</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" name="pin" placeholder="Pin">
+							<input type="text" class="form-control" name="pin_sub[]" placeholder="Pin">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Empresa</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="empresa[]" placeholder="Empresa en la que trabaja">
+							<input type="text" class="form-control" name="empresa_sub[]" placeholder="Empresa en la que trabaja">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Cargo</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="cargo[]" placeholder="Cargo">
+							<input type="text" class="form-control" name="cargo_sub[]" placeholder="Cargo">
 						</div>
 					</div>
 
@@ -428,14 +469,14 @@ get_header(); ?>
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Cédula de Identidad</label>
 								<div class="col-sm-8">
-									<input type="file" name="ci_file[]">
+									<input type="file" name="ci_file_sub[]">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Foto tipo Carnet</label>
 								<div class="col-sm-8">
-									<input type="file" name="foto_file[]">
+									<input type="file" name="foto_file_sub[]">
 								</div>
 							</div>
 						</div>
@@ -496,7 +537,9 @@ get_header(); ?>
 	<!-- terms & conditions -->
 	<div class="popup-holder popup-terms-conditions">
 		<div class="content">
-			<?php echo $terms; ?>
+			<div class="user-content">
+				<?php echo $terms; ?>
+			</div>
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-8">
 					<div class="color-button static green-bg">
@@ -518,75 +561,23 @@ get_header(); ?>
 			<h1>Registra tu Pago</h1>
 		</div>
 		<div class="content">
-			<form id="frm_payment" class="form-horizontal">
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Banco</label>
-					<div class="col-sm-10">
-						<select name="banco">
-							<option value="banco1">Banco 1</option>
-							<option value="banco2">Banco 2</option>
-							<option value="banco3">Banco 3</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Nº de cuenta</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="num_cuenta" placeholder="Nº de cuenta">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Nº de depósito/transf.</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="num_ref" placeholder="Nº de depósito o transferencia">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Fecha del depósito</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control day-input" name="fecha">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Monto total</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="monto" placeholder="Monto total">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Adjuntar Voucher / Constancia</label>
-					<div class="col-sm-10">
-						<input type="file" name="constancia">
-					</div>
-				</div>
-
-				<div class="buttons">
-					<div class="color-button static green-bg">
-						<a href="#" id="submit_payment">
-							<div class="label">
-								<h1>Confirmar</h1>
-							</div>
-						</a>
-					</div>
-				</div>
-				<br><br>
+			<form id="frm_payment" class="form-horizontal" enctype="multipart/form-data" action="<?php echo get_template_directory_uri(); ?>/inc/create-afiliado.php">
+				<?php $_COLOR = 'green'; require('payment-form.php'); ?>
 			</form>
 		</div>
 	</div>
 
 <?php
 	$url = get_template_directory_uri();
+	$thank_you_page = append_var_to_url(get_page_by_path('gracias')->guid, 'p', 'natural');
 	$GLOBALS['script'] = <<<EOT
 <script type="text/javascript" src="{$url}/js/jquery.matchheight.min.js"></script>
 <script type="text/javascript" src="{$url}/js/datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="{$url}/js/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
 <script type="text/javascript" src="{$url}/js/functions_afiliate.js"></script>
+<script type="text/javascript">
+	var thank_you_page = '{$thank_you_page}';
+</script>
 EOT;
 ?>
 <?php get_footer(); ?>

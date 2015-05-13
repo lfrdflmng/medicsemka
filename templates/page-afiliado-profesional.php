@@ -5,9 +5,11 @@
  * @since 1.0
  */
 
+$page_vars = get_post_custom( get_page_by_path('afiliado-profesional')->ID );
+
 $feat_image = wp_get_attachment_url( get_post_thumbnail_id($post->ID) );
 
-$terms = <<<EOT
+/*$terms = <<<EOT
 <p>LA EMPRESA MEDIC SEMKA C.A, domiciliada en Ciudad Bolívar, Municipio Autónomo HERES del Estado Bolívar, inscrita en el Registro de la Circunscripción Judicial del Estado Bolívar bajo el número 46, tomo 6-A, de fecha 2 de Febrero del año 2015, quien en lo sucesivo y a los efectos de este contrato se denomina servicios médicos, declara que ha resuelto hacer oferta pública del presente contrato para el uso de los servicios médicos que ofrece, quedando expresamente entendido que todo usuario de los servicios médicos de MEDIC SEMKA C.A, se adhiere a las clausulas, términos y modalidades QUE A CONTINUACIÓN SE ESTABLECEN:</p>
 <ol>
 <li>El contrato y sus beneficios solo serán para el afiliado, no puede utilizarlo una segunda persona.</li>
@@ -29,7 +31,8 @@ $terms = <<<EOT
 </ol>
 <p>CONTRATO N° 00001<br>
 <p>El presente contrato de afiliación, tiene validez por 12 meses a partir de la fecha de inicio de contrato y culmina 12 meses posteriores a la misma.</p>
-EOT;
+EOT;*/
+$terms = $page_vars['terminos_condiciones'][0];
 
 get_header(); ?>
 
@@ -68,14 +71,29 @@ get_header(); ?>
 			<!-- beneficios -->
 			<div class="col-sm-8">
 				<div class="box match2 color-bg right-arrow">
-					<h1>BENEFICIOS</h1>
+					<h1><?php print_var('beneficios_titulo', $page_vars); ?></h1>
 					<ul>
+						<?php
+							$icons_array = array('people', 'peoples', 'money', 'megaphone', 'arrow');
+							$max = count($icons_array);
+							$text_array = explode('<br />', nl3br($page_vars['beneficios_contenido'][0]));
+							$i = 0;
+							foreach ($text_array as $text) :
+						?>
+						<li><span class="lbl"><?php echo $text; ?></span><span class="circle-icon icon-<?php echo $icons_array[$i]; ?>"></span></li>
+						<?php
+								$i++;
+								if ($i >= $max) break;
+							endforeach;
+						?>
+					</ul>
+					<!--ul>
 						<li><span class="lbl">Entrenamiento al personal para atención al paciente</span><span class="circle-icon icon-people"></span></li>
 						<li><span class="lbl">Canalización de mayor cantidad de pacientes</span><span class="circle-icon icon-peoples"></span></li>
 						<li><span class="lbl">Cancelación inmediata</span><span class="circle-icon icon-money"></span></li>
 						<li><span class="lbl">Publicidad en inclusión de sus servicios en nuestra web</span><span class="circle-icon icon-megaphone"></span></li>
 						<li><span class="lbl">Ventajas de comercialización y optimización de la atención médica especializada</span><span class="circle-icon icon-arrow"></span></li>
-					</ul>
+					</ul-->
 				</div>
 			</div>
 			<!-- img -->
@@ -91,21 +109,31 @@ get_header(); ?>
 			<!-- servicios especializados ofertados -->
 			<div class="col-sm-6">
 				<div class="box match4 color-bg">
-					<h1>lÍNEAMIENTOS PARA LA ADMINISTRACIÓN DEL SERVICIO</h1>
-					<p>Una vez establecido y celebrado el convenio de servicio, cada Afiliado, dispondrá de un listado de afiliados, la cual se actualizará regularmente en función de la afluencia de posteriores afiliaciones.</p>
+					<h1><?php print_var('lineamientos_titulo', $page_vars); ?></h1>
+					<p><?php print_var('lineamientos_contenido', $page_vars); ?></p>
 				</div>
 			</div>
 			<!-- img -->
 			<div class="col-sm-6">
 				<div class="box match4 color-bg">
-					<h1>REQUISITOS ADMINISTRATIVOS</h1>
+					<h1><?php print_var('requisitos_titulo', $page_vars); ?></h1>
 					<ul>
+						<?php
+							$items = explode('<br />', nl3br($page_vars['requisitos_contenido'][0]));
+							foreach ($items as $item) :
+						?>
+						<li><?php echo $item; ?></li>
+						<?php
+							endforeach;
+						?>
+					</ul>
+					<!--ul>
 						<li>Celebrar contrato de Servicios</li>
 						<li>Copia de C.I. y foto tipo carnet</li>
 						<li>Fotocopia del carnet del colegio del gremio respectivo</li>
 						<li>Resumen curricular en físico y digital</li>
 						<li>Información de la especialidad o servicios ofrecidos</li>
-					</ul>
+					</ul-->
 				</div>
 			</div>
 		</div>
@@ -131,7 +159,7 @@ get_header(); ?>
 				</a>
 			</div>
 			<div class="match7 color-button brown-bg">
-				<a href="#">
+				<a href="<?php echo get_page_by_path('contacto')->guid; ?>">
 					<div class="heart-plus white"></div>
 					<div class="label">
 						<span>Contacta a un</span>
@@ -147,6 +175,7 @@ get_header(); ?>
 		<div class="content">
 			<h1 id="current_afiliate_title" class="purple">Profesional Afiliado</h1>
 			<form id="frm_afiliates" class="form-horizontal">
+				<input type="hidden" name="medicsemka_type" value="profesional">
 
 				<!-- afiliado principal -->
 				<div id="afiliado_principal">
@@ -308,7 +337,9 @@ get_header(); ?>
 	<!-- terms & conditions -->
 	<div class="popup-holder popup-terms-conditions">
 		<div class="content">
-			<?php echo $terms; ?>
+			<div class="user-content">
+				<?php echo $terms; ?>
+			</div>
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-8">
 					<div class="color-button static purple-bg">
@@ -330,75 +361,23 @@ get_header(); ?>
 			<h1>Registra tu Pago</h1>
 		</div>
 		<div class="content">
-			<form id="frm_payment" class="form-horizontal">
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Banco</label>
-					<div class="col-sm-10">
-						<select name="banco">
-							<option value="banco1">Banco 1</option>
-							<option value="banco2">Banco 2</option>
-							<option value="banco3">Banco 3</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Nº de cuenta</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="num_cuenta" placeholder="Nº de cuenta">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Nº de depósito/transf.</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="num_ref" placeholder="Nº de depósito o transferencia">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Fecha del depósito</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control day-input" name="fecha">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Monto total</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" name="monto" placeholder="Monto total">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Adjuntar Voucher / Constancia</label>
-					<div class="col-sm-10">
-						<input type="file" name="constancia">
-					</div>
-				</div>
-
-				<div class="buttons">
-					<div class="color-button static purple-bg">
-						<a href="#" id="submit_payment">
-							<div class="label">
-								<h1>Confirmar</h1>
-							</div>
-						</a>
-					</div>
-				</div>
-				<br><br>
+			<form id="frm_payment" class="form-horizontal" enctype="multipart/form-data" action="<?php echo get_template_directory_uri(); ?>/inc/create-afiliado.php">
+				<?php $_COLOR = 'purple'; require('payment-form.php'); ?>
 			</form>
 		</div>
 	</div>
 
 <?php
 	$url = get_template_directory_uri();
+	$thank_you_page = append_var_to_url(get_page_by_path('gracias')->guid, 'p', 'profesional');
 	$GLOBALS['script'] = <<<EOT
 <script type="text/javascript" src="{$url}/js/jquery.matchheight.min.js"></script>
 <script type="text/javascript" src="{$url}/js/datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="{$url}/js/datepicker/locales/bootstrap-datepicker.es.min.js"></script>
 <script type="text/javascript" src="{$url}/js/functions_afiliate.js"></script>
+<script type="text/javascript">
+	var thank_you_page = '{$thank_you_page}';
+</script>
 EOT;
 ?>
 <?php get_footer(); ?>
