@@ -155,7 +155,8 @@ get_header(); ?>
 				</a>
 			</div>
 			<div class="match7 color-button brown-bg">
-				<a href="<?php echo get_page_by_path('contacto')->guid; ?>">
+				<!--<a href="<?php echo get_page_by_path('contacta-asesor')->guid; ?>">-->
+				<a href="?page_id=117">
 					<div class="heart-plus white"></div>
 					<div class="label">
 						<span>Contacta a un</span>
@@ -265,12 +266,12 @@ get_header(); ?>
 						</div>
 					</div>
 
-					<div class="form-group">
+					<!--div class="form-group">
 						<label for="profesion" class="col-sm-2 control-label">Profesion</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control" id="profesion" name="cargo" placeholder="Profesión">
 						</div>
-					</div>
+					</div-->
 
 					<div class="form-group">
 						<label for="servicios" class="col-sm-12 control-label" style="text-align:left !important">Breve descripción de los servicios que ofrece</label>

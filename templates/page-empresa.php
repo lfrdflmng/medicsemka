@@ -20,7 +20,7 @@ get_header(); ?>
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="title lightblue-bg">
-					<h1 class="magictime slideLeftRetourn">La Empresa</h1>
+					<h1 class="magictime slideLeftRetourn">¿Quienes Somos?</h1>
 				</div>
 			</div>
 		</div>
@@ -30,7 +30,7 @@ get_header(); ?>
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="color-box light">
-					<p><b><?php echo $content; ?></b></p>
+					<p><b><?php echo nl3br($content); ?></b></p>
 				</div>
 			</div>
 		</div>
@@ -38,9 +38,9 @@ get_header(); ?>
 		<div class="row">
 			<?php if (!empty($mission)) : ?>
 			<div class="col-sm-6">
-				<h1>Misión</h1>
+				<h1 class="magictime slideLeftRetourn">Misión y Visión</h1>
 				<div class="color-box light match1">
-					<p><?php echo $content; ?></p>
+					<p><?php echo nl3br($mission); ?></p>
 				</div>
 			</div>
 			<?php endif; ?>
@@ -49,7 +49,7 @@ get_header(); ?>
 			<div class="col-sm-6">
 				<h1>Visión</h1>
 				<div class="color-box light match1">
-					<p><?php echo $vision; ?></p>
+					<p><?php echo nl3br($vision); ?></p>
 				</div>
 			</div>
 			<?php endif; ?>

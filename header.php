@@ -28,6 +28,12 @@
 	<link type="text/css" href="<?php echo get_template_directory_uri(); ?>/js/datepicker/css/bootstrap-datepicker3.css" rel="stylesheet">
 	<link type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/awesome-bootstrap-checkbox.css" rel="stylesheet">
 	<link type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/animate.min.css" rel="stylesheet">
+	
+	<!-- 
+	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/favicon.ico" />
+	<link rel="shortcut icon" href="img/favicon.ico" /> 
+	-->
+
 	<?php wp_head(); ?>
 </head>
 <body>
@@ -35,35 +41,49 @@
 		<div class="row header">
 			<div class="col-sm-offset-4 col-sm-8">
 				<!-- login module -->
-				<div class="row sign-bar cropped">
-					<!-- username and passowrd -->
-					<div class="col-sm-8 col-xs-9">
-						<div class="row">
-							<!-- username -->
-							<div class="col-sm-2 hidden-xs">
-								<label for="username">Usuario </label>
-							</div>
-							<div class="col-sm-4 col-xs-6">
-								<input type="text" id="username" name="username" placeholder="Usuario">
-							</div>
-							<!-- password -->
-							<div class="col-sm-2 hidden-xs">
-								<label for="password">Clave </label>
-							</div>
-							<div class="col-sm-4 col-xs-6">
-								<input type="password" id="password" name="password" placeholder="Clave">
+				<form method="post" action="<?php bloginfo('url') ?>/wp-login.php">
+					<div class="row sign-bar cropped">
+						<?php if (!is_user_logged_in()) : ?>
+						<!-- username and passowrd -->
+						<div class="col-sm-8 col-xs-9">
+							<div class="row">
+								<!-- username -->
+								<div class="col-sm-2 hidden-xs">
+									<label for="username">Usuario </label>
+								</div>
+								<div class="col-sm-4 col-xs-6">
+									<input type="text" id="username" name="log" placeholder="Usuario">
+								</div>
+								<!-- password -->
+								<div class="col-sm-2 hidden-xs">
+									<label for="password">Clave </label>
+								</div>
+								<div class="col-sm-4 col-xs-6">
+									<input type="password" id="password" name="pwd" placeholder="Clave">
+								</div>
 							</div>
 						</div>
+						<!-- login button -->
+						<div class="col-sm-1 col-xs-3">
+							<?php do_action('login_form'); ?>
+							<input type="hidden" name="redirect_to" value="<?php echo $_SERVER['REQUEST_URI']; ?>" />
+							<input type="hidden" name="user-cookie" value="1" />
+							<button class="cropped" name="user-submit">&#8629;</button>
+						</div>
+						<!-- sign up button -->
+						<div class="col-sm-offset-0 col-sm-3 col-xs-offset-6 col-xs-6 text-right">
+							<a class="cropped" href="<?php echo get_page_by_path('afiliado-natural')->guid; ?>">Afíliate</a>
+						</div>
+						<?php else : ?>
+						<div class="col-sm-8 col-xs-7">
+							<p class="username"><?php global $user_ID, $user_identity; get_currentuserinfo(); echo $user_identity; ?></p>
+						</div>
+						<div class="col-sm-4 col-xs-5">
+							<a class="cropped" href="<?php echo wp_logout_url('index.php'); ?>">Cerrar sesión</a>
+						</div>
+						<?php endif; ?>
 					</div>
-					<!-- login button -->
-					<div class="col-sm-1 col-xs-3">
-						<button class="cropped">&#8629;</button>
-					</div>
-					<!-- sign up button -->
-					<div class="col-sm-offset-0 col-sm-3 col-xs-offset-6 col-xs-6 text-right">
-						<a class="cropped" href="<?php echo get_page_by_path('afiliado-natural')->guid; ?>">Afíliate</a>
-					</div>
-				</div>
+				</form>
 				<!-- /login module -->
 			</div>
 
@@ -80,7 +100,7 @@
 
 					<!-- menu -->
 					<div class="col-sm-8">
-						<?php wp_nav_menu( array( 'menu' => 'Superior' ) ); ?>
+						<?php wp_nav_menu( array( 'menu1' => 'Superior' ) ); ?>
 						<!--ul class="menu"-->
 							<!--li><a href="#">La Empresa</a></li>
 							<li><a href="#">Servicios</a></li>

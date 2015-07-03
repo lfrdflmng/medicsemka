@@ -560,3 +560,33 @@ function posts_bancos() {
     ));
 }
 add_action( 'init', 'posts_bancos' );
+
+
+// CUSTOM POST "Directorio"
+function posts_directorio() {
+    register_post_type( 'directorio', array(
+        'labels' => array(
+            'name' => 'Directorio',
+            'singular_name' => 'Directorio',
+        ),
+        'menu_icon' => 'dashicons-nametag', //<-- https://developer.wordpress.org/resource/dashicons/
+        'description' => 'Directorio',
+        'public' => true,
+        'menu_position' => 21,
+        'supports' => array( 'title'/*, 'editor', 'thumbnail'*/, 'categories' )
+    ));
+}
+add_action( 'init', 'posts_directorio' );
+
+function posts_directorio_taxonomy() {
+	register_taxonomy(
+		'especialidad',
+		'directorio',
+		array(
+			'label' => 'Especialidad',
+			'rewrite' => array( 'slug' => 'especialidad' ),
+			'hierarchical' => true
+		)
+	);
+}
+add_action( 'init', 'posts_directorio_taxonomy' );

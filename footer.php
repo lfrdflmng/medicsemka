@@ -53,7 +53,8 @@
 						<li><a href="<?php echo $natural; ?>">Personal Natural</a></li>
 						<li><a href="<?php echo get_page_by_path('afiliado-profesional')->guid; ?>">Personal Jurídica</a></li>
 						<li><a href="<?php echo get_page_by_path('comercio-afiliado')->guid; ?>">Comercios</a></li>
-						<li><a href="<?php echo $contacto; ?>">Contacto a un asesor</a></li>
+						<!--<li><a href="<?php echo $contacto; ?>">Contacto a un asesor</a></li>-->
+						<li><a href="?page_id=117">Contacto a un asesor</a></li>
 					</ul>
 				</div>
 			</div>

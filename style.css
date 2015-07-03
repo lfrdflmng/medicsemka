@@ -273,6 +273,13 @@ body {
 	padding-right: 7px;
 }
 
+.sign-bar .username {
+	display: table-cell;
+	height: 45px;
+	vertical-align: middle;
+	text-transform: uppercase;
+}
+
 /* header */
 
 header {
@@ -821,6 +828,11 @@ footer .copyrights p {
 	color: #fff;
 }
 
+.afiliar.asesor .color-bg {
+	background-color: #777777;
+	color: #fff;
+}
+
 .afiliar .box.right-arrow:before {
 	left: 100%;
 	top: 50%;
@@ -880,6 +892,22 @@ footer .copyrights p {
 	pointer-events: none;
 	border-color: rgba(136, 183, 213, 0);
 	border-left-color: #e27d1f;
+	border-width: 30px;
+	margin-top: -30px;
+	z-index: 1;
+}
+
+.afiliar.asesor .box.right-arrow:after {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(136, 183, 213, 0);
+	border-left-color: #777777;
 	border-width: 30px;
 	margin-top: -30px;
 	z-index: 1;
@@ -950,6 +978,21 @@ footer .copyrights p {
 .circle-icon.icon-megaphone { background-position: 0 -288px; }
 .circle-icon.icon-arrow { background-position: 0 -324px; }
 
+.mail-icon {
+	background: url(img/mail_icon-white-small.png) no-repeat 0 0;
+	width: 36px;
+	height: 36px;
+	display: inline-block !important;
+	background-position: 0 0;
+}
+
+.phone-icon {
+	background: url(img/phone_icon-white-small.png) no-repeat 0 0;
+	width: 36px;
+	height: 36px;
+	display: inline-block !important;
+	background-position: 0 0;
+}
 .afiliar .box ul li {
 	list-style-type: disc !important;
 	line-height: 37px;
@@ -999,6 +1042,10 @@ footer .copyrights p {
 	position: relative;
 }
 
+										li.circ {
+											list-style-type: disc; 
+										}
+
 figure.full .image-overlay {
 	position: absolute;
 }
@@ -1029,7 +1076,7 @@ figure.full .image-overlay h1 {
 .afiliar.natural .cropped-arrow-box:after {
 	content: '';
 	position: absolute;
-	bottom: -30px;
+	bottom: -29px;
 	left: 0;
 	font-size: 0px; line-height: 0%; width: 0px;
 	border-top: 30px solid #00a079;
@@ -1039,7 +1086,7 @@ figure.full .image-overlay h1 {
 .afiliar.profesional .cropped-arrow-box:after {
 	content: '';
 	position: absolute;
-	bottom: -30px;
+	bottom: -29px;
 	left: 0;
 	font-size: 0px; line-height: 0%; width: 0px;
 	border-top: 30px solid #575274;
@@ -1049,10 +1096,20 @@ figure.full .image-overlay h1 {
 .afiliar.comercio .cropped-arrow-box:after {
 	content: '';
 	position: absolute;
-	bottom: -30px;
+	bottom: -29px;
 	left: 0;
 	font-size: 0px; line-height: 0%; width: 0px;
 	border-top: 30px solid #e27d1f;
+	border-right: 30px solid rgba(0,0,0,0);
+}
+
+.afiliar.asesor .cropped-arrow-box:after {
+	content: '';
+	position: absolute;
+	bottom: -29px;
+	left: 0;
+	font-size: 0px; line-height: 0%; width: 0px;
+	border-top: 30px solid #777777;
 	border-right: 30px solid rgba(0,0,0,0);
 }
 
@@ -1204,11 +1261,10 @@ figure.full .image-overlay h1 {
 }
 
 .noticias .title h1, .default .title h1 {
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: 700;
 	font-style: italic;
 	text-decoration: underline;
-	text-transform: uppercase;
 	color: #fff;
 	padding: 12px 20px;
 }
@@ -1573,4 +1629,66 @@ ul.social-icons li {
 .fadeIn {
 	-webkit-animation: fadeIn 2s;
 	animation: fadeIn 2s;
+}
+
+
+/* directorio */
+
+.initials {
+	list-style: none;
+	background-color: #44B5E1;
+	color: #fff;
+	text-align: center;
+	font-size: 25px;
+	margin-top: 20px;
+}
+
+.initials li a {
+	display: block;
+	color: #fff;
+	width: 100%;
+}
+
+.initials li a:hover, .initials li a.active {
+	text-decoration: none;
+	font-size: 28px;
+	transition: font-size .5s;
+	background-color: rgba(255,255,255,.2);
+}
+
+.directorio-holder .directorio {
+	display: inline-block;
+	margin: 0 20px 40px 20px;
+}
+
+.directorio-holder .directorio h1 {
+	color: #44b5e1;
+}
+
+.directorio-holder .directorio h2 {
+	font-weight: 700;
+}
+
+.directorio-holder p {
+	font-size: 20px;
+	font-style: italic;
+	padding: 2px 7px;
+}
+
+.directorio-holder p span {
+	opacity: .5;
+}
+
+.directorio-holder .special {
+	background-color: rgba(206,206,206,.3);
+	border-radius: 4px;
+	padding: 4px 0;
+}
+
+.directorio-holder .specialty {
+	text-transform: uppercase;
+	text-decoration: underline;
+	font-size: 30px;
+	font-style: italic;
+	margin-top: 20px;
 }
